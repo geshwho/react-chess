@@ -2,12 +2,17 @@
   height: 50px;
   width: 50px;
 }
-
-.square:nth-child(odd){
+.col:nth-child(odd) .square:nth-child(odd) {
   background-color: #CCCCCC;
 }
+.col:nth-child(odd) .square:nth-child(even){
+  background-color: #888888;
+}
 
-.square:nth-child(even){
+.col:nth-child(even) .square:nth-child(even) {
+  background-color: #CCCCCC;
+}
+.col:nth-child(even) .square:nth-child(odd){
   background-color: #888888;
 }
 

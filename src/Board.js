@@ -9,8 +9,12 @@ class Board extends Component {
 
   render() {
     const squares = []
-    for (let j = 0; j < 8; j++) {
-      squares.push(<Square key={j}/>)
+    for (let i = 0; i < 8; i++) {
+      const col = []
+      for (let j = 0; j < 8; j++) {
+        col.push(<Square key={j}/>)
+      }
+      squares.push(<div className="col" key={i}>{col}</div>)
     }
     return (
       <div>
