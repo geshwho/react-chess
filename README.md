@@ -9,6 +9,7 @@ Other requirements will come as I go!
   - Board
   - Square
   - Piece
+- Utilize chess.js or write everything from scratch??
 - Drag and Drop to move pieces
 - Click and click to move pieces
 - Identify Legal Moves
