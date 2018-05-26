@@ -1,1 +1,18 @@
+.square {
+  height: 50px;
+  width: 50px;
+}
 
+.square:nth-child(odd){
+  background-color: #CCCCCC;
+}
+
+.square:nth-child(even){
+  background-color: #888888;
+}
+
+.board {
+  display: flex;
+  justify-content: center;
+  max-width: 400px;
+}
