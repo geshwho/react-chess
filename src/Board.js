@@ -19,8 +19,7 @@ class Board extends Component {
     return (
       <div>
         <h2>Board Placeholder</h2>
-        <div>I have many <Square/></div>
-        <div>Let's actually make some</div>
+        <div>Let's actually make some squares</div>
         <div className="board">{squares}</div>
       </div>
     )
