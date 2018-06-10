@@ -9,9 +9,18 @@ import {  faChessPawn,
         } from '@fortawesome/fontawesome-free-solid/'
 
 class Square extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      row: props.row,
+      col: props.col
+    }
+  }
+
   render() {
-    var ico = null;
-    var color = null
+    // TODO: move this logic outta here!
+    var ico;
+    var color;
     switch(this.props.piece) {
       case 'P':
         ico = faChessPawn;
@@ -49,6 +58,8 @@ class Square extends Component {
       case 'k':
         ico = faChessKing;
         break;
+      default:
+        ico = null;
     }
     switch(this.props.piece) {
       case 'P':
@@ -67,10 +78,12 @@ class Square extends Component {
       case 'k':
         color = 'black';
         break;
+      default:
+        color = null;
     }
     const piece = ico ? <FontAwesomeIcon icon={ico} size="2x" color={color} className="piece"/> : null;
     return (
-      <div className="square">
+      <div className="square" onClick={() => this.props.selector(this.state)} style={{backgroundColor: this.props.selected ? 'green' : ''}}>
         {piece}
       </div>
     )

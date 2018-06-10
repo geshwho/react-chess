@@ -1,15 +1,27 @@
 import React, { Component } from 'react';
 import Square from './Square'
+import {toRowCol, toAlgebraicNotation} from './chess_notation'
 
 class Board extends Component {
   constructor() {
     super();
     // We'll use FEN notation. Cuz.. why re-invent something?
-    // Also chess.js uses this if I decide this is only going to be a UI project
-    // and chess.js will handle all of the validation, moving pieces, etc.
     this.state = {
-      position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+      position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+      selectedSquare: null,
+      row: null,
+      col: null
     }
+
+    this.squareSelector = this.squareSelector.bind(this);
+  }
+
+  squareSelector(square) {
+    this.setState({
+      selectedSquare: toAlgebraicNotation(square.row, square.col),
+      row: square.row,
+      col: square.col,
+    });
   }
 
   replacer(match, offset, string) {
@@ -18,6 +30,7 @@ class Board extends Component {
   }
 
   render() {
+    // TODO: move logic outside of render
     const squares = []
     var pieces = this.state.position.split(' ')[0];
     pieces = pieces.replace(/\d/g, this.replacer);
@@ -25,7 +38,7 @@ class Board extends Component {
     for (let i = 0; i < 8; i++) {
       const col = []
       for (let j = 0; j < 8; j++) {
-        col.push(<Square key={j} piece={pieces[i][j]}/>)
+        col.push(<Square key={j} row={i} col={j} piece={pieces[i][j]} selector={this.squareSelector} selected={this.state.row===i && this.state.col===j} />)
       }
       squares.push(<div className="col" key={i}>{col}</div>)
     }
