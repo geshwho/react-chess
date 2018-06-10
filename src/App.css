@@ -2,6 +2,7 @@
   height: 50px;
   width: 50px;
 }
+
 .col:nth-child(odd) .square:nth-child(odd) {
   background-color: #CCCCCC;
 }
@@ -18,6 +19,17 @@
 
 .board {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   max-width: 400px;
+}
+
+.col {
+  display: flex;
+  flex-direction: row;
+}
+
+.piece {
+  display: block;
+  margin: auto;
 }
