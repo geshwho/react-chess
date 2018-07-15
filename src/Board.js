@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Square from './Square'
-import {toRowCol, toAlgebraicNotation} from './chess_notation'
+import {toAlgebraicNotation} from './chess_notation'
 import Chess from 'chess.js'
 
 class Board extends Component {
@@ -8,23 +8,41 @@ class Board extends Component {
     super();
     // We'll use FEN notation. Cuz.. why re-invent something?
     this.state = {
-      position: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
       selectedSquare: null,
       row: null,
       col: null,
-      chess: new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+      chess: new Chess("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"),
+      moves: []
     }
 
     this.squareSelector = this.squareSelector.bind(this);
   }
 
   squareSelector(square) {
-    const algebraicSquare = toAlgebraicNotation(square.row, square.col)
-    if(this.state.chess.get(algebraicSquare) !== null){
+    const {selectedSquare, chess, moves} = this.state;
+    const algebraicSquare = toAlgebraicNotation(square.row, square.col);
+    const getSquare = chess.get(algebraicSquare);
+    if (selectedSquare !== null && moves.includes(algebraicSquare)) {
+      chess.move({ from: selectedSquare, to: algebraicSquare });
       this.setState({
-          selectedSquare: algebraicSquare,
+        selectedSquare: null,
+        row: null,
+        col: null,
+        moves: []
+      });
+    } else if(getSquare !== null && getSquare.color === chess.turn()){
+      this.setState({
+        selectedSquare: algebraicSquare,
         row: square.row,
         col: square.col,
+        moves: this.state.chess.moves({ square: algebraicSquare, verbose: true }).map((x) => x.to)
+      });
+    } else {
+      this.setState({
+        selectedSquare: null,
+        row: null,
+        col: null,
+        moves: []
       });
     }
   }
@@ -34,19 +52,23 @@ class Board extends Component {
     return ' '.repeat(rep);
   }
 
+  squareFormatters(i, j){
+    const selected = this.state.row===i && this.state.col===j;
+    const possibleMove = this.state.moves.includes(toAlgebraicNotation(i, j));
+    return [selected, possibleMove]
+  }
+
   getSquares() {
     // Converts FEN into <Square>s
     const squares = [];
-    const moves = this.state.chess.moves({ square: this.state.selectedSquare });
-    console.log(moves);
-    var pieces = this.state.position.split(' ')[0];
+    var pieces = this.state.chess.fen().split(' ')[0];
     pieces = pieces.replace(/\d/g, this.replacer);
     pieces = pieces.split('/');
     for (let i = 0; i < 8; i++) {
       const col = []
       for (let j = 0; j < 8; j++) {
-        const selected = this.state.row===i && this.state.col===j;
-        col.push(<Square key={j} row={i} col={j} piece={pieces[i][j]} selector={this.squareSelector} selected={selected} />)
+        const [selected, possibleMove] = this.squareFormatters(i, j);
+        col.push(<Square key={j} row={i} col={j} piece={pieces[i][j]} selector={this.squareSelector} selected={selected} possibleMove={possibleMove}/>)
       }
       squares.push(<div className="col" key={i}>{col}</div>)
     }

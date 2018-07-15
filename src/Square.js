@@ -82,8 +82,16 @@ class Square extends Component {
         color = null;
     }
     const piece = ico ? <FontAwesomeIcon icon={ico} size="2x" color={color} className="piece"/> : null;
+    var classes = 'square';
+    if (this.props.selected) {
+      classes += ' selected';
+    } else if (this.props.possibleMove) {
+      classes += ' possible'
+    } else {
+      classes += ' notselected'
+    }
     return (
-      <div className="square" onClick={() => this.props.selector(this.state)} style={{backgroundColor: this.props.selected ? 'green' : ''}}>
+      <div className={classes} onClick={() => this.props.selector(this.state)}>
         {piece}
       </div>
     )

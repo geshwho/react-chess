@@ -3,17 +3,24 @@
   width: 50px;
 }
 
-.col:nth-child(odd) .square:nth-child(odd) {
+.col .square.selected {
+  background-color: green;
+}
+
+.col .square.possible {
+  background-color: blue;
+}
+.col:nth-child(odd) .square.notselected:nth-child(odd) {
   background-color: #CCCCCC;
 }
-.col:nth-child(odd) .square:nth-child(even){
+.col:nth-child(odd) .square.notselected:nth-child(even){
   background-color: #888888;
 }
 
-.col:nth-child(even) .square:nth-child(even) {
+.col:nth-child(even) .square.notselected:nth-child(even) {
   background-color: #CCCCCC;
 }
-.col:nth-child(even) .square:nth-child(odd){
+.col:nth-child(even) .square.notselected:nth-child(odd){
   background-color: #888888;
 }
 
