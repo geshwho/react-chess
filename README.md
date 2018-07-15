@@ -6,12 +6,11 @@ Other requirements will come as I go!
 
 ## Things to be implemented (basically everything)
 - [x] Basic board
-- [ ] Make pieces
-- [ ] Allow user to move pieces around with NO RULES
-- [ ] Drag and Drop to move pieces
-- [ ] Click and click to move pieces
+- [x] Make pieces
 - [ ] Identify Legal Moves
   - [ ] Including things like castling and en passant
+- [ ] Drag and Drop to move pieces
+- [ ] Click and click to move pieces
 - [ ] Identify Endgame/Stalemate
 - [ ] Identify Check
 - [ ] Log of moves made during game
