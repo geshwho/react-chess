@@ -6,7 +6,6 @@ import Chess from 'chess.js'
 class Board extends Component {
   constructor() {
     super();
-    // We'll use FEN notation. Cuz.. why re-invent something?
     this.state = {
       selectedSquare: null,
       row: null,
@@ -22,7 +21,8 @@ class Board extends Component {
     const {selectedSquare, chess, moves} = this.state;
     const algebraicSquare = toAlgebraicNotation(square.row, square.col);
     const getSquare = chess.get(algebraicSquare);
-    if (selectedSquare !== null && moves.includes(algebraicSquare)) {
+    if (selectedSquare !== null && moves.includes(algebraicSquare)) { // already have a selected square, see if we clicked a possible move
+      // this seems wrong. move() updates the state technically..
       chess.move({ from: selectedSquare, to: algebraicSquare });
       this.setState({
         selectedSquare: null,
@@ -30,14 +30,14 @@ class Board extends Component {
         col: null,
         moves: []
       });
-    } else if(getSquare !== null && getSquare.color === chess.turn()){
+    } else if(getSquare !== null && getSquare.color === chess.turn()){ // nothing currently selected, see if we clicked the right color piece
       this.setState({
         selectedSquare: algebraicSquare,
         row: square.row,
         col: square.col,
         moves: this.state.chess.moves({ square: algebraicSquare, verbose: true }).map((x) => x.to)
       });
-    } else {
+    } else { // otherwise, reset selections
       this.setState({
         selectedSquare: null,
         row: null,
@@ -62,6 +62,7 @@ class Board extends Component {
     // Converts FEN into <Square>s
     const squares = [];
     var pieces = this.state.chess.fen().split(' ')[0];
+    //this logic can be rewritten to just use chess.board()
     pieces = pieces.replace(/\d/g, this.replacer);
     pieces = pieces.split('/');
     for (let i = 0; i < 8; i++) {
@@ -79,8 +80,6 @@ class Board extends Component {
     const sqs = this.getSquares();
     return (
       <div>
-        <h2>Board Placeholder</h2>
-        <div>Let's actually make some squares</div>
         <div className="board">{sqs}</div>
       </div>
     )

@@ -17,10 +17,8 @@ class Square extends Component {
     }
   }
 
-  render() {
-    // TODO: move this logic outta here!
+  getIco() {
     var ico;
-    var color;
     switch(this.props.piece) {
       case 'P':
         ico = faChessPawn;
@@ -61,6 +59,11 @@ class Square extends Component {
       default:
         ico = null;
     }
+    return ico;
+  }
+
+  getColor() {
+    var color;
     switch(this.props.piece) {
       case 'P':
       case 'N':
@@ -81,7 +84,10 @@ class Square extends Component {
       default:
         color = null;
     }
-    const piece = ico ? <FontAwesomeIcon icon={ico} size="2x" color={color} className="piece"/> : null;
+    return color;
+  }
+
+  getClasses() {
     var classes = 'square';
     if (this.props.selected) {
       classes += ' selected';
@@ -90,6 +96,12 @@ class Square extends Component {
     } else {
       classes += ' notselected'
     }
+    return classes;
+  }
+
+  render() {
+    const [color, ico, classes] = [this.getColor(), this.getIco(), this.getClasses()];
+    const piece = ico ? <FontAwesomeIcon icon={ico} size="2x" color={color} className="piece"/> : null;
     return (
       <div className={classes} onClick={() => this.props.selector(this.state)}>
         {piece}
